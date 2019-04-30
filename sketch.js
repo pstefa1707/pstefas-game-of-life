@@ -1,13 +1,14 @@
 /*jshint esversion: 6 */
 
 let plane = {};
-let xSize = 40;
-let ySize = 40;
-let pixelSize = 20;
+let xSize = 150;
+let ySize = 150;
+let pixelSize = 15;
 let cntu = true;
+var bgGraph;
 function setup() {
-
     createCanvas(pixelSize*xSize, pixelSize*ySize);
+    bgGraph = createGraphics(width, height);
     print("Width:", width, "Height:", height);
     for (let i = 0; i <= xSize; i ++) {
         plane[i] = {};
@@ -18,25 +19,24 @@ function setup() {
             } else {
                 plane[i][j] = {"state":"d", "pstate":"d"};
             }
+            bgGraph.square(i*pixelSize, j*pixelSize, pixelSize);
         }
     }
     stroke(0);
     strokeWeight(0.5);
     fill(255);
-    background(255);
 }
 
 function draw() {
-    if (cntu) {
-        fill(255);
-        checks();
-    }
+    image(bgGraph, 0, 0);
+    fill(255);
+    checks();
     document.getElementById("fpsCounter").innerHTML = "FPS: " + round(frameRate());
 }
 
 function drawPixel(x, y) {
     if (plane[x][y]["state"] == "z") {
-        fill(color(255,69,0));
+        fill(0);
         square(x*pixelSize, y*pixelSize, pixelSize);
         fill(255);
     } else if (plane[x][y]["state"] == "l") {
@@ -66,7 +66,9 @@ function checks() {
             } else if ((count == 3 || count == 2) && plane[x][y]["state"] == "z"){
                 nplane[x][y]["state"] = "z";
             }
-            drawPixel(x,y);
+            if (nplane[x][y]["state"] != plane[x][y]["state"]){
+                drawPixel(x,y);
+            }
         }
     }
     plane = nplane;
