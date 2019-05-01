@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
 
 let plane = {};
-let xSize = 150;
-let ySize = 150;
-let pixelSize = 15;
+let xSize = 50;
+let ySize = 22;
+let pixelSize = 50;
 let cntu = true;
 var bgGraph;
 function setup() {
@@ -19,6 +19,7 @@ function setup() {
             } else {
                 plane[i][j] = {"state":"d", "pstate":"d"};
             }
+            bgGraph.fill(0);
             bgGraph.square(i*pixelSize, j*pixelSize, pixelSize);
         }
     }
@@ -28,7 +29,7 @@ function setup() {
 }
 
 function draw() {
-    image(bgGraph, 0, 0);
+    image(bgGraph, 0,0);
     fill(255);
     checks();
     document.getElementById("fpsCounter").innerHTML = "FPS: " + round(frameRate());
@@ -37,7 +38,7 @@ function draw() {
 function drawPixel(x, y) {
     if (plane[x][y]["state"] == "z") {
         fill(0);
-        square(x*pixelSize, y*pixelSize, pixelSize);
+        
         fill(255);
     } else if (plane[x][y]["state"] == "l") {
         fill(color(255,69,0));
@@ -66,8 +67,12 @@ function checks() {
             } else if ((count == 3 || count == 2) && plane[x][y]["state"] == "z"){
                 nplane[x][y]["state"] = "z";
             }
-            if (nplane[x][y]["state"] != plane[x][y]["state"]){
-                drawPixel(x,y);
+            if (nplane[x][y]["state"] == "z") {
+                push();
+                stroke(color("red"));
+                fill(255);
+                square(x*pixelSize, y*pixelSize, pixelSize);
+                pop();
             }
         }
     }

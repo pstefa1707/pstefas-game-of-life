@@ -5,4 +5,8 @@ html, body {
 canvas {
     display: block;
 }
+
+.game-of-life {
+    margin-left: 25px;
+}
   
